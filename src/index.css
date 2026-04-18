@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "system-ui", "sans-serif";
+  /* Palette: ["#21295c","#1b3b6f","#065a82","#1c7293","#9eb3c2"] */
+
+  /* Colors Mapping */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+
+  --color-info: hsl(var(--info));
+  --color-info-foreground: hsl(var(--info-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  /* SLA & Custom Colors */
+  --color-sla-breached: hsl(var(--sla-breached));
+  --color-sla-near: hsl(var(--sla-near));
+  --color-sla-ok: hsl(var(--sla-ok));
+  --color-worknote: hsl(var(--worknote));
+
+  /* Sidebar Mapping */
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  /* Border Radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* Transition  */
+  --transition-property-viewport: width, height, transform, opacity;
+  --transition-timing-viewport: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-duration-viewport: 300ms;
+
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.3s ease-out;
+  --animate-accordion-up: accordion-up 0.3s ease-out;
+  --animate-in: enter 0.3s ease-out;
+  --animate-out: exit 0.3s ease-in;
+  --animate-pulse-sla: pulse-sla 2s ease-in-out infinite;
+
+
+  @keyframes accordion-down {
+    from {
+      opacity: 0;
+      height: 0;
+    }
+
+    to {
+      opacity: 1;
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes pulse-sla {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes exit {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    /* Base Neutrality */
+    --background: 205 20% 98%;
+    --foreground: 232 47% 15%;
+
+    /* Card & Popover */
+    --card: 0 0% 100%;
+    --card-foreground: 232 47% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 232 47% 15%;
+
+    /* Primary: #21295c */
+    --primary: 232 47% 25%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: Light mix of #9eb3c2 */
+    --secondary: 205 25% 92%;
+    --secondary-foreground: 232 47% 25%;
+
+    /* Muted: #9eb3c2 */
+    --muted: 205 25% 90%;
+    --muted-foreground: 205 20% 45%;
+
+    /* Accent: #1c7293 */
+    --accent: 197 68% 95%;
+    --accent-foreground: 197 68% 34%;
+
+    /* Info: #065a82 */
+    --info: 200 91% 27%;
+    --info-foreground: 0 0% 100%;
+
+    /* Semantic Colors preserved for utility */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --sla-breached: 0 84% 60%;
+    --sla-near: 25 95% 53%;
+    --sla-ok: 142 71% 45%;
+    --worknote: 48 96% 89%;
+
+    /* Border & Ring: Mix of #9eb3c2 and #1c7293 */
+    --border: 205 25% 85%;
+    --input: 205 25% 85%;
+    --ring: 197 68% 34%;
+    --radius: 0.5rem;
+
+    /* Sidebar: #21295c background with #1b3b6f accents */
+    --sidebar-background: 232 47% 20%;
+    --sidebar-foreground: 205 25% 90%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 232 47% 25%;
+    --sidebar-accent: 217 61% 27%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 217 61% 35%;
+    --sidebar-ring: 197 68% 34%;
+  }
+
+  .dark {
+    --background: 232 47% 8%;
+    --foreground: 205 25% 95%;
+    --card: 232 47% 12%;
+    --card-foreground: 205 25% 95%;
+    --popover: 232 47% 12%;
+    --popover-foreground: 205 25% 95%;
+
+    --primary: 205 25% 95%;
+    --primary-foreground: 232 47% 25%;
+
+    --secondary: 232 40% 15%;
+    --secondary-foreground: 205 25% 95%;
+
+    --muted: 232 30% 15%;
+    --muted-foreground: 205 20% 65%;
+
+    --accent: 197 68% 20%;
+    --accent-foreground: 205 25% 95%;
+
+    --border: 232 30% 20%;
+    --input: 232 30% 20%;
+    --ring: 197 68% 34%;
+
+    --sidebar-background: 232 47% 5%;
+    --sidebar-foreground: 205 25% 85%;
+    --sidebar-border: 232 30% 15%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 3px;
+  }
+}
