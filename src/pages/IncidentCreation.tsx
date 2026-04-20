@@ -2,7 +2,6 @@ import { useState, useMemo, useCallback } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { cn } from "../libs/utils";
-import { Header } from "../components/Header";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import { Label } from "../components/Label";
@@ -129,8 +128,7 @@ const IncidentCreation = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      <div className="min-h-[calc(100vh-3.5rem)]">
         <div className="flex items-center justify-center py-24 px-4">
           <Card className="max-w-md w-full text-center">
             <CardContent className="pt-10 pb-10 space-y-5">
@@ -211,9 +209,7 @@ const IncidentCreation = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
+    <div className="min-h-[calc(100vh-3.5rem)]">
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <header className="py-12 sm:py-16 text-center max-w-2xl mx-auto">
           <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-normal tracking-tight leading-[1.15] text-foreground mb-4">
@@ -344,7 +340,7 @@ const IncidentCreation = () => {
                   {!formData.project && (
                     <div className="rounded-lg border border-primary/20 p-3 flex items-center gap-2">
                       <Info className="h-4 w-4 text-primary shrink-0" />
-                      <p className="text-xs text-muted-foreground">
+                      <div className="text-xs text-muted-foreground">
                         Please select a{" "}
                         <Tag
                           field={{ label: "Project", id: "project" }}
@@ -356,7 +352,7 @@ const IncidentCreation = () => {
                           className="inline"
                         />{" "}
                         options.
-                      </p>
+                      </div>
                     </div>
                   )}
 

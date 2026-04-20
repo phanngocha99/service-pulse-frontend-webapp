@@ -98,8 +98,7 @@ const NavigationMenuViewport = React.forwardRef<
       className={cn(
         "origin-top relative mt-1.5 overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-lg",
         "h-(--radix-navigation-menu-viewport-height) w-(--radix-navigation-menu-viewport-width)",
-        "transition-[width,height] duration-300 ease-out",
-        "data-[state=open]:slide-in-from-top-2 data-[state=closed]:slide-in-from-bottom-2 data-[state=closed]:fade-out data-[state=closed]:zoom-out-95",
+        "data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 duration-3005",
         className,
       )}
       ref={ref}
@@ -117,7 +116,7 @@ const NavigationMenuIndicator = React.forwardRef<
   <NavigationMenuPrimitive.Indicator
     ref={ref}
     className={cn(
-      "top-full z-1 flex h-1.5 items-end justify-center overflow-hidden data-[state=visible]:animate-accordion-down data-[state=hidden]:animate-accordion-up data-[state=hidden]:fade-out data-[state=visible]:fade-in duration-500 transition-all",
+      "top-full z-1 flex h-1.5 items-end justify-center overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 duration-300",
       className,
     )}
     {...props}

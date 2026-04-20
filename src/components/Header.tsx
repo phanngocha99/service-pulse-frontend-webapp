@@ -5,6 +5,9 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import { cn } from "../libs/utils";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
+import Logo from "../assets/logo.svg";
+import LogoText from "../assets/logo-text.svg";
+import { AppBreadcrumbs } from "../components/AppBreadcrump";
 import {
   Sheet,
   SheetContent,
@@ -33,19 +36,24 @@ import {
   Settings,
   Menu,
   FileText,
-  Inbox,
+  FolderClosed,
   Wrench,
   Shield,
+  List,
+  ListPlus,
+  ListCheck,
   Search,
   ChevronRight,
   LayoutGrid,
   UserCircle,
   Users,
+  User,
   Key,
   Lock,
+  LayoutDashboard,
+  BookAlert,
+  ClockAlert,
 } from "lucide-react";
-import Logo from "../assets/logo.svg";
-import LogoText from "../assets/logo-text.svg";
 
 interface NavItem {
   label: string;
@@ -58,58 +66,117 @@ interface NavItem {
 }
 
 const navGroups = {
-  services: {
-    label: "Services",
+  selfServices: {
+    label: "Self Service",
     items: [
       {
-        label: "Submit Incident",
+        label: "My Profile",
+        path: "/profile",
+        icon: UserCircle,
+        description: "Manage your personal settings and preferences",
+        requireAuth: true,
+      },
+      {
+        label: "Submit an Incident",
         path: "/",
         icon: FileText,
-        description: "Report a new incident or issue",
+        description: "Report an issue",
         showWhenGuest: true,
       },
       {
-        label: "My Tickets",
-        path: "/self-service",
-        icon: Inbox,
-        description: "View and track your submitted tickets",
+        label: "My Incidents",
+        path: "/self-service/incidents",
+        icon: List,
+        description: "Track the status of your submitted incidents",
+        requireAuth: true,
+      },
+      {
+        label: "My Dashboard",
+        path: "/dashboard",
+        icon: LayoutDashboard,
+        description:
+          "Monitor the status and progress of your personal incidents",
         requireAuth: true,
       },
     ] as NavItem[],
   },
-  workspace: {
-    label: "Workspace",
+  serviceDesk: {
+    label: "Service Desk",
     items: [
       {
-        label: "Agent Workspace",
-        path: "/workspace",
-        icon: Wrench,
-        description: "Manage and resolve assigned tickets",
+        label: "All Incidents",
+        path: "/service-desk/incidents",
+        icon: List,
+        description: "View and manage all incidents in the project ",
+        requirePermission: { action: "read", resource: "ticket" },
+      },
+      {
+        label: "Incidents assigned to My Group",
+        path: "/service-desk/incidents?queue=my-group",
+        icon: Users,
+        description: "Incidents assigned to your team groups in the project",
+        requirePermission: { action: "read", resource: "ticket" },
+      },
+      {
+        label: "Incidents assigned to Me",
+        path: "/service-desk/incidents?queue=assigned-to-me",
+        icon: User,
+        description:
+          "Review incidents in the project you are currently working on ",
+        requirePermission: { action: "read", resource: "ticket" },
+      },
+      {
+        label: "Open Incidents",
+        path: "/service-desk/incidents?queue=new",
+        icon: ListPlus,
+        description: "View all recently reported incidents in the project",
+        requirePermission: { action: "read", resource: "ticket" },
+      },
+      {
+        label: "Unassigned Incidents",
+        path: "/service-desk/incidents?queue=unassigned",
+        icon: BookAlert,
+        description: "New incidents waiting for an assignment in the project",
+        requirePermission: { action: "read", resource: "ticket" },
+      },
+      {
+        label: "Incidents SLA Breaching",
+        path: "/service-desk/incidents?queue=breaching",
+        icon: ClockAlert,
+        description:
+          "Incidents with SLAs at risk within the next hour in the project",
+        requirePermission: { action: "read", resource: "ticket" },
+      },
+      {
+        label: "Resolved Incidents",
+        path: "/service-desk/incidents?queue=resolved",
+        icon: ListCheck,
+        description: "List of recently resolved tickets in the project",
         requirePermission: { action: "read", resource: "ticket" },
       },
     ] as NavItem[],
   },
-  admin: {
-    label: "Administration",
+  projectManagement: {
+    label: "Project Management",
     items: [
       {
-        label: "Admin Panel",
-        path: "/admin",
-        icon: Shield,
-        description: "System configuration and management",
+        label: "Project Settings",
+        path: "/project/settings",
+        icon: List,
+        description: "Manage project users, groups, and permissions",
         requirePermission: { action: "create", resource: "user" },
       },
     ] as NavItem[],
   },
-  profile: {
-    label: "Account",
+  admin: {
+    label: "Global Administration",
     items: [
       {
-        label: "Profile",
-        path: "/profile",
-        icon: UserCircle,
-        description: "Your account settings and preferences",
-        requireAuth: true,
+        label: "System Panel",
+        path: "/admin",
+        icon: Shield,
+        description: "Global system configuration and management",
+        requirePermission: { action: "create", resource: "user" },
       },
     ] as NavItem[],
   },
@@ -125,7 +192,7 @@ const searchTargets = [
   {
     label: "My Requests",
     path: "/self-service",
-    icon: Inbox,
+    icon: FolderClosed,
     category: "Tickets",
   },
   {
@@ -265,13 +332,13 @@ export function Header() {
                 <div className="relative mb-3">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
                   <Input
-                    placeholder="Search..."
+                    placeholder="Search pages..."
                     className="h-9 pl-8 text-sm"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
-                <nav className="space-y-4">
+                <nav className="w-full p-4 max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded">
                   {Object.entries(navGroups).map(([key, group]) => {
                     const visible = group.items.filter(canSee);
                     if (visible.length === 0) return null;
@@ -323,19 +390,19 @@ export function Header() {
                   Navigate
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-120 p-4">
+                  <div className="w-120 p-4 max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded">
+                    {" "}
                     {/* Search inside dropdown */}
-                    <div className="relative mb-3">
+                    <div className="relative mb-3 ">
                       <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
                       <Input
                         ref={searchRef}
-                        placeholder="Search pages, categories..."
+                        placeholder="Search pages..."
                         className="h-8 pl-8 text-sm"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
-
                     {searchQuery ? (
                       /* Search Results */
                       <div className="space-y-3 max-h-80 overflow-y-auto scrollbar-thin">
@@ -373,7 +440,7 @@ export function Header() {
                       </div>
                     ) : (
                       /* Default grouped nav */
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="flex flex-col gap-4">
                         {Object.entries(navGroups).map(([key, group]) => {
                           const visible = group.items.filter(canSee);
                           if (visible.length === 0) return null;
@@ -446,6 +513,7 @@ export function Header() {
           </Link>
         )}
       </div>
+      <AppBreadcrumbs />
     </header>
   );
 }
